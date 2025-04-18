@@ -2,7 +2,7 @@ require("dotenv").config({
 	path: ".env",
 });
 
-import { cleanEnv, str, port, bool, num } from "envalid";
+import { cleanEnv, str, port, bool } from "envalid";
 
 const env = cleanEnv(process.env, {
 	NODE_ENV: str({ choices: ["development", "production", "test"] }),
