@@ -14,6 +14,7 @@ router.delete("/skill/:id", Wrapper(SiteContentController.deleteSkill));
 
 router.patch("/projects", Wrapper(SiteContentController.updateProjects));
 router.delete("/project/:id", Wrapper(SiteContentController.deleteProject));
+router.post("/project", Wrapper(SiteContentController.createProject));
 
 router.patch("/navigation", Wrapper(SiteContentController.updateNavigation));
 router.patch("/contact", Wrapper(SiteContentController.updateContact));

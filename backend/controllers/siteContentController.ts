@@ -63,6 +63,16 @@ class SiteContentController {
 		}
 	}
 
+	static async createProject(req: Request, res: Response) {
+		try {
+			const newProject = await SiteContentService.createProject(req.body);
+			res.status(201).json(newProject);
+		} catch (error) {
+			console.error("Error creating project:", error);
+			res.status(500).json({ error: "Internal Server Error" });
+		}
+	}
+
 	static async deleteSkill(req: Request, res: Response) {
 		try {
 			const { id } = req.params;

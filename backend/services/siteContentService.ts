@@ -71,6 +71,36 @@ class SiteContentService {
 		return record;
 	}
 
+	static async createProject(data: {
+		title: string;
+		description: string;
+		image: string;
+		tags: string[];
+		slug: string;
+		liveUrl?: string;
+		githubUrl?: string;
+	}) {
+		// Get the SiteContent record
+		const content = await this.getSiteContentRecord();
+
+		// Create a new project
+		const newProject = await prisma.project.create({
+			data: {
+				title: data.title,
+				description: data.description,
+				image: data.image,
+				tags: data.tags,
+				slug: data.slug,
+				// liveUrl: data.liveUrl,
+
+				// githubUrl: data.githubUrl,
+				siteContentId: content.id, // Associate with the SiteContent record
+			},
+		});
+
+		return newProject;
+	}
+
 	// Fetch the entire site content.
 	static async getAllContents() {
 		return await this.getSiteContentRecord();
