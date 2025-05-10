@@ -1,189 +1,193 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { createContext, useContext, useState, useEffect } from "react"
+import type React from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 // Define user type
 type User = {
-  id: string
-  name: string
-  email: string
-  role: "admin" | "user"
-}
+	id: string;
+	name: string;
+	email: string;
+	role: "admin" | "user";
+};
 
 // Define auth state
 type AuthState = {
-  user: User | null
-  token: string | null
-  isAuthenticated: boolean
-  isLoading: boolean
-}
+	user: User | null;
+	token: string | null;
+	isAuthenticated: boolean;
+	isLoading: boolean;
+};
 
 // Define auth context type
 type AuthContextType = AuthState & {
-  login: (email: string, password: string) => Promise<void>
-  logout: () => void
-  register: (name: string, email: string, password: string) => Promise<void>
-}
+	login: (email: string, password: string) => Promise<void>;
+	logout: () => void;
+	register: (name: string, email: string, password: string) => Promise<void>;
+};
 
 // Create the auth context
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Initial auth state
 const initialState: AuthState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
-  isLoading: true,
-}
+	user: null,
+	token: null,
+	isAuthenticated: false,
+	isLoading: true,
+};
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<AuthState>(initialState)
+	const [state, setState] = useState<AuthState>(initialState);
 
-  // Check for existing auth on mount
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // Get token from localStorage
-        const token = localStorage.getItem("auth-token")
+	// Check for existing auth on mount
+	useEffect(() => {
+		const checkAuth = async () => {
+			try {
+				// Get token from localStorage
+				const token = localStorage.getItem("auth-token");
 
-        if (!token) {
-          setState({ ...initialState, isLoading: false })
-          return
-        }
+				if (!token) {
+					setState({ ...initialState, isLoading: false });
+					return;
+				}
 
-        // For demo purposes, we'll use a mock user
-        // In a real app, you would validate the token with your backend
-        const user: User = {
-          id: "1",
-          name: "Admin User",
-          email: "admin@example.com",
-          role: "admin",
-        }
+				// For demo purposes, we'll use a mock user
+				// In a real app, you would validate the token with your backend
+				const user: User = {
+					id: "1",
+					name: "Admin User",
+					email: "admin@example.com",
+					role: "admin",
+				};
 
-        setState({
-          user,
-          token,
-          isAuthenticated: true,
-          isLoading: false,
-        })
-      } catch (error) {
-        console.error("Authentication error:", error)
-        setState({ ...initialState, isLoading: false })
-      }
-    }
+				setState({
+					user,
+					token,
+					isAuthenticated: true,
+					isLoading: false,
+				});
+			} catch (error) {
+				console.error("Authentication error:", error);
+				setState({ ...initialState, isLoading: false });
+			}
+		};
 
-    checkAuth()
-  }, [])
+		checkAuth();
+	}, []);
 
-  // Login function
-  const login = async (email: string, password: string) => {
-    try {
-      // In a real app, you would make an API call to your backend
-      // For demo purposes, we'll simulate a successful login
+	// Login function
+	const login = async (email: string, password: string) => {
+		try {
+			// In a real app, you would make an API call to your backend
+			// For demo purposes, we'll simulate a successful login
 
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
+			// Simulate API call delay
+			await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Mock validation (replace with actual API call)
-      if (email !== "admin@example.com" || password !== "password") {
-        throw new Error("Invalid credentials")
-      }
+			// Mock validation (replace with actual API call)
+			if (email !== "admin@example.com" || password !== "password") {
+				throw new Error("Invalid credentials");
+			}
 
-      const user: User = {
-        id: "1",
-        name: "Admin User",
-        email: "admin@example.com",
-        role: "admin",
-      }
+			const user: User = {
+				id: "1",
+				name: "Admin User",
+				email: "admin@example.com",
+				role: "admin",
+			};
 
-      // Mock token (replace with actual token from your backend)
-      const token = "mock-jwt-token"
+			// Mock token (replace with actual token from your backend)
+			const token = "mock-jwt-token";
 
-      // Save token to localStorage
-      localStorage.setItem("auth-token", token)
+			// Save token to localStorage
+			localStorage.setItem("auth-token", token);
 
-      // Update state
-      setState({
-        user,
-        token,
-        isAuthenticated: true,
-        isLoading: false,
-      })
-    } catch (error) {
-      console.error("Login error:", error)
-      throw error
-    }
-  }
+			// Update state
+			setState({
+				user,
+				token,
+				isAuthenticated: true,
+				isLoading: false,
+			});
+		} catch (error) {
+			console.error("Login error:", error);
+			throw error;
+		}
+	};
 
-  // Logout function
-  const logout = () => {
-    // Remove token from localStorage
-    localStorage.removeItem("auth-token")
+	// Logout function
+	const logout = () => {
+		// Remove token from localStorage
+		localStorage.removeItem("auth-token");
 
-    // Reset state
-    setState({
-      user: null,
-      token: null,
-      isAuthenticated: false,
-      isLoading: false,
-    })
-  }
+		// Reset state
+		setState({
+			user: null,
+			token: null,
+			isAuthenticated: false,
+			isLoading: false,
+		});
+	};
 
-  // Register function
-  const register = async (name: string, email: string, password: string) => {
-    try {
-      // In a real app, you would make an API call to your backend
-      // For demo purposes, we'll simulate a successful registration
+	// Register function
+	const register = async (name: string, email: string) => {
+		try {
+			// In a real app, you would make an API call to your backend
+			// For demo purposes, we'll simulate a successful registration
 
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
+			// Simulate API call delay
+			await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Mock user creation (replace with actual API call)
-      const user: User = {
-        id: "2", // In a real app, this would be generated by the backend
-        name,
-        email,
-        role: "user",
-      }
+			// Mock user creation (replace with actual API call)
+			const user: User = {
+				id: "2", // In a real app, this would be generated by the backend
+				name,
+				email,
+				role: "user",
+			};
 
-      // Mock token (replace with actual token from your backend)
-      const token = "mock-jwt-token"
+			// Mock token (replace with actual token from your backend)
+			const token = "mock-jwt-token";
 
-      // Save token to localStorage
-      localStorage.setItem("auth-token", token)
+			// Save token to localStorage
+			localStorage.setItem("auth-token", token);
 
-      // Update state
-      setState({
-        user,
-        token,
-        isAuthenticated: true,
-        isLoading: false,
-      })
-    } catch (error) {
-      console.error("Registration error:", error)
-      throw error
-    }
-  }
+			// Update state
+			setState({
+				user,
+				token,
+				isAuthenticated: true,
+				isLoading: false,
+			});
+		} catch (error) {
+			console.error("Registration error:", error);
+			throw error;
+		}
+	};
 
-  // Create context value
-  const contextValue: AuthContextType = {
-    ...state,
-    login,
-    logout,
-    register,
-  }
+	// Create context value
+	const contextValue: AuthContextType = {
+		...state,
+		login,
+		logout,
+		register,
+	};
 
-  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+	return (
+		<AuthContext.Provider value={contextValue}>
+			{children}
+		</AuthContext.Provider>
+	);
 }
 
 // Custom hook to use auth context
 export function useAuth() {
-  const context = useContext(AuthContext)
+	const context = useContext(AuthContext);
 
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider")
-  }
+	if (context === undefined) {
+		throw new Error("useAuth must be used within an AuthProvider");
+	}
 
-  return context
+	return context;
 }

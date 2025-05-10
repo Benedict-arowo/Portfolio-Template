@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { use, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Save, Trash } from "lucide-react";
 
@@ -32,7 +32,7 @@ export default function EditProjectPage({
 	params: { slug: string };
 }) {
 	const { content, updateContent } = useContent();
-	const { slug } = use(params);
+	const { slug } = params;
 	const router = useRouter();
 
 	// Find the project from the content context

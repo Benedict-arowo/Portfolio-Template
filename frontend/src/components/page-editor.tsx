@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
+import {
+	DragDropContext,
+	Draggable,
+	Droppable,
+	DropResult,
+} from "@hello-pangea/dnd";
 import { Edit, Eye, Grip, Plus, Save } from "lucide-react";
 
 import { useContent } from "@/lib/content-provider";
@@ -38,7 +43,7 @@ export function PageEditor() {
 		{ id: "contact", name: "Contact", visible: true },
 	]);
 
-	const handleDragEnd = (result: any) => {
+	const handleDragEnd = (result: DropResult) => {
 		if (!result.destination) return;
 		const reordered = [...sections];
 		const [moved] = reordered.splice(result.source.index, 1);

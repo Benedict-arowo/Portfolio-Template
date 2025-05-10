@@ -37,7 +37,16 @@ export default function ProjectsPage() {
 	} = useContent();
 	const [search, setSearch] = useState("");
 
-	const setProjects = (projects: any) => {
+	interface Project {
+		id: string;
+		title: string;
+		tags: string[];
+		status: string;
+		date: string;
+		slug: string;
+	}
+
+	const setProjects = (projects: Project[]) => {
 		updateContent({
 			projects: projects,
 		});
